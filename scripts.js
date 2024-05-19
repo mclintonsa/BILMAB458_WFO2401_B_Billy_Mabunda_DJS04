@@ -1,4 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
+import './book-preview.js';
 
 // Initialize state variables
 let page = 1;
@@ -8,26 +9,13 @@ let matches = books;
 const renderBookPreviews = (books, containerElement) => {
   const fragment = document.createDocumentFragment();
 
-  // Loop through the provided books
   for (const { author, id, image, title } of books) {
-    const element = document.createElement('button');
-    element.classList.add('preview');
-    element.setAttribute('data-preview', id);
-
-    // Created the HTML for each book preview
-    element.innerHTML = `
-      <img
-        class="preview__image"
-        src="${image}"
-        alt="${title}"
-      />
-      <div class="preview__info">
-        <h3 class="preview__title">${title}</h3>
-        <div class="preview__author">${authors[author]}</div>
-      </div>
-    `;
-
-    fragment.appendChild(element);
+    const bookPreview = document.createElement('book-preview');
+    bookPreview.setAttribute('author', author);
+    bookPreview.setAttribute('id', id);
+    bookPreview.setAttribute('image', image);
+    bookPreview.setAttribute('title', title);
+    fragment.appendChild(bookPreview);
   }
 
   containerElement.appendChild(fragment);
@@ -184,7 +172,7 @@ const handlePreviewClick = (event) => {
 
 initializeUI();
 
-// Event handler functions 
+// Event handler functions
 document.querySelector('[data-search-cancel]').addEventListener('click', handleSearchCancel);
 document.querySelector('[data-settings-cancel]').addEventListener('click', handleSettingsCancel);
 document.querySelector('[data-header-search]').addEventListener('click', handleHeaderSearch);
